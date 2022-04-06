@@ -1,6 +1,25 @@
 # flask-json-vue
 flask json api and vue
 
+## Project structure
+    .
+    ├── flaskjsonvue            # flask app
+    │   ├── api                 # json api
+    │   │   └── v1              # v1 blueprints
+    │   │       └── demo.py     # demo json api
+    │   ├── client              # client blueprints
+    │   │   └── demo.py         # demo client routes, redering jinja templates
+    │   ├── templates           # Jinja templates
+    │   ├── __init__.py         # create app
+    │   ├── db.py               # db setup
+    │   └── models.py           # database models
+    ├── instance                # data directory for docker services
+    │   └── config.py           # flask config, define database connection etc.
+    ├── .flaskenv               # define app to and environment
+    ├── .pre-commit-config.yml  # pre commit config
+    ├── README.md               # This readme file
+    └── requirements.txt        # list of version pinned python dependencies
+
 ## Setup
 
 ### Clone repo
