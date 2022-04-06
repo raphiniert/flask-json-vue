@@ -1,3 +1,3 @@
 #.flaskenv
-FLASK_APP=flask-json-vue
+FLASK_APP=flaskjsonvue
 FLASK_ENV=development
