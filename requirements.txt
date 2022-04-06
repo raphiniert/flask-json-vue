@@ -6,6 +6,8 @@ coverage==6.3.2
 distlib==0.3.4
 filelock==3.6.0
 Flask==2.1.1
+Flask-SQLAlchemy==2.5.1
+greenlet==1.1.2
 identify==2.4.12
 importlib-metadata==4.11.3
 iniconfig==1.1.1
@@ -25,6 +27,7 @@ python-dotenv==0.20.0
 PyYAML==6.0
 rich==12.2.0
 six==1.16.0
+SQLAlchemy==1.4.35
 toml==0.10.2
 tomli==2.0.1
 virtualenv==20.14.0
