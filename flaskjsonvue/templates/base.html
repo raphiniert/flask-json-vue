@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{% endblock %}</title>
+    {% block customcss %}
+        {# include custom css files #}
+    {% endblock %}
+  </head>
+  <body>
+    <a href="/">Home</a>
+    {# <a href="{{ url_for('finance.index') }}">Finances</a> #}
+    <a href="{{ url_for('demo.index') }}">Demo</a>
+    <div class="container">
+    {% block content %}
+        {# put content here #}
+    {% endblock %}
+    </div>
+    {% block scripts %}
+        {# include custom js files #}
+    {% endblock %}
+  </body>
+</html>
