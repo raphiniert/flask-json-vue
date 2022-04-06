@@ -1,0 +1,42 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"python.defaultInterpreterPath": "./venv/bin/python",
+		"files.exclude": {
+			".vscode": true,
+			"venv": true,
+			"**__pycache__**": true
+		},
+		"files.associations": {
+			"*.html": "jinja-html"
+		},
+		"editor.rulers": [
+			88
+		],
+		"python.formatting.provider": "black",
+		"python.linting.flake8Enabled": false,
+		"python.linting.enabled": false,
+		"[python]": {
+			"editor.formatOnSave": true,
+		},
+		"[jinja-html]": {
+			"editor.tabSize": 2,
+		},
+		"[html]": {
+			"editor.tabSize": 2,
+		},
+		"[vue]": {
+			"editor.tabSize": 2,
+		},
+		// Emmet Snippet Completion
+		"emmet.includeLanguages": {
+			"jinja": "html",
+			"jinja-html": "html",
+			"html": "jinja-html"
+		},
+	}
+}
