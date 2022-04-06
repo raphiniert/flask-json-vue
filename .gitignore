@@ -20,6 +20,9 @@ coverage.xml
 # Log files:
 *.log
 
+# Database files:
+*.db
+
 # Flask stuff:
 instance/config.py
 .webassets-cache
