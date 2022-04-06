@@ -9,6 +9,7 @@ __pycache__/
 # Unit test / coverage reports
 htmlcov/
 .tox/
+.coverage
 coverage.xml
 .pytest_cache/
 
@@ -20,7 +21,7 @@ coverage.xml
 *.log
 
 # Flask stuff:
-instance/
+instance/config.py
 .webassets-cache
 
 # Sphinx documentation
