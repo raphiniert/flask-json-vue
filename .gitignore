@@ -32,3 +32,6 @@ docs/_build/
 
 # Environments
 venv/
+
+# os specific
+.DS_Store
