@@ -32,3 +32,4 @@ def init_db(ctx: click.Context, auto_import: bool):
         raise NotImplementedError(f"auto import is not yet implemented")
         # TODO: import importer
         # ctx.invoke(importer)
+    click.echo(f"Initialized database.")
