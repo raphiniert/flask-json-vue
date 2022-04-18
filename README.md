@@ -95,13 +95,13 @@ coverage run -m pytest -s  # to use ipdb
 Print test coverage on command line.
 
 ```shell script
-coverage report --omit "venv/*,tests/*,instance/*"
-coverage report --omit "venv/*,tests/*,instance/*" --show-missing  # also print uncovered lines
+coverage report
+coverage report --show-missing  # also print uncovered lines
 ```
 
 Create html output and store it into `htmlcov` folder. 
 
 ```shell script
-coverage html --omit "venv/*,tests/*,instance/*"
+coverage html
 ```
 
