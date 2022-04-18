@@ -10,5 +10,5 @@ def test_demo_api_list(client):
     assert response.status_code == 200
     # asser response is json
     assert response.is_json
-    # assert content is empty list
-    assert response.json == []
+    # assert content is not an empty list
+    assert response.json != []
