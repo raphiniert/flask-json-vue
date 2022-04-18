@@ -13,8 +13,13 @@ flask json api and vue
     │   ├── __init__.py         # create app
     │   ├── db.py               # db setup
     │   └── models.py           # database models
-    ├── instance                # data directory for docker services
-    │   └── config.py           # flask config, define database connection etc.
+    ├── instance                # instance directory containing flask configs
+    │   ├── config.py           # flask config, define database connection etc.
+    │   └── test_config.py      # flask test config for running pytests
+    ├── tests                   # tests
+    │   ├── api                 # api specific tests
+    │   ├── client              # client specific tests
+    │   └── contest.py          # test config, app and client fixtures
     ├── .flaskenv               # define app to and environment
     ├── .pre-commit-config.yml  # pre commit config
     ├── README.md               # This readme file
@@ -82,4 +87,21 @@ flask init-db [--auto-import]
 
 ```shell script
 coverage run -m pytest
+coverage run -m pytest -s  # to use ipdb
 ```
+
+### Test coverage
+
+Print test coverage on command line.
+
+```shell script
+coverage report --omit "venv/*,tests/*,instance/*"
+coverage report --omit "venv/*,tests/*,instance/*" --show-missing  # also print uncovered lines
+```
+
+Create html output and store it into `htmlcov` folder. 
+
+```shell script
+coverage html --omit "venv/*,tests/*,instance/*"
+```
+
