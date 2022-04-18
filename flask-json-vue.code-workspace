@@ -12,7 +12,7 @@
 			"**__pycache__**": true
 		},
 		"files.associations": {
-			"*.html": "jinja-html"
+			"*.html": "jinja-html",
 		},
 		"editor.rulers": [
 			88
@@ -32,11 +32,15 @@
 		"[vue]": {
 			"editor.tabSize": 2,
 		},
+		"[json]": {
+			"editor.tabSize": 2,
+		},
 		// Emmet Snippet Completion
 		"emmet.includeLanguages": {
 			"jinja": "html",
 			"jinja-html": "html",
-			"html": "jinja-html"
+			"html": "jinja-html",
+			"json": "json"
 		},
 	}
 }
