@@ -1,7 +1,10 @@
+import json
 import pytest
+
 from flask.config import Config
 from flaskjsonvue import create_app
 from flaskjsonvue.db import db, setup_engine
+from flaskjsonvue.models import Demo
 
 
 @pytest.fixture
@@ -22,6 +25,14 @@ def app():
         setup_engine()
         db.init_app(app)
         db.create_all()
+
+        # load demo data from json file
+        with open("tests/data/demo.json") as f:
+            # create demo objects
+            demos = [Demo(**d) for d in json.load(f)]
+            # save demo objects to database
+            db.session.add_all(demos)
+            db.session.commit()
 
     yield app
 
