@@ -214,7 +214,7 @@ class TestDemoJsonSchema(unittest.TestCase):
                     "type": "string",
                     "format": "date-time",
                 },
-                "decimal_number": {
+                "decimal_value": {
                     "description": f"The demo's decimal number.",
                     "type": "number",
                 },
@@ -229,7 +229,7 @@ class TestDemoJsonSchema(unittest.TestCase):
                     "minLength": 1,
                 },
             },
-            "required": ["id", "name", "entry_date", "decimal_number"],
+            "required": ["id", "name", "entry_date", "decimal_value"],
         }
 
     def test_schema_create(self):
@@ -246,7 +246,7 @@ class TestDemoJsonSchema(unittest.TestCase):
                     "type": "string",
                     "format": "date-time",
                 },
-                "decimal_number": {
+                "decimal_value": {
                     "description": f"The demo's decimal number.",
                     "type": "number",
                 },
@@ -256,7 +256,7 @@ class TestDemoJsonSchema(unittest.TestCase):
                     "minLength": 1,
                 },
             },
-            "required": ["name", "entry_date", "decimal_number"],
+            "required": ["name", "entry_date", "decimal_value"],
         }
 
     def test_schema_update(self):
@@ -273,7 +273,7 @@ class TestDemoJsonSchema(unittest.TestCase):
                     "type": "string",
                     "format": "date-time",
                 },
-                "decimal_number": {
+                "decimal_value": {
                     "description": f"The demo's decimal number.",
                     "type": "number",
                 },
@@ -288,7 +288,7 @@ class TestDemoJsonSchema(unittest.TestCase):
                     "minLength": 1,
                 },
             },
-            "required": ["id", "name", "entry_date", "decimal_number"],
+            "required": ["id", "name", "entry_date", "decimal_value"],
         }
 
     def test_schema_delete(self):
@@ -324,7 +324,7 @@ class TestDemoJsonSchema(unittest.TestCase):
                         "type": "string",
                         "format": "date-time",
                     },
-                    "decimal_number": {
+                    "decimal_value": {
                         "description": f"The demo's decimal number.",
                         "type": "number",
                     },
@@ -339,7 +339,7 @@ class TestDemoJsonSchema(unittest.TestCase):
                         "minLength": 1,
                     },
                 },
-                "required": ["id", "name", "entry_date", "decimal_number"],
+                "required": ["id", "name", "entry_date", "decimal_value"],
             },
         }
 

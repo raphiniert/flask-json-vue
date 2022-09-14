@@ -31,7 +31,7 @@ class DemoJsonSchema(BaseJsonSchema):
                     "type": "string",
                     "format": "date-time",
                 },
-                "decimal_number": {
+                "decimal_value": {
                     "description": f"The {cls.name.lower()}'s decimal number.",
                     "type": "number",
                 },
@@ -40,6 +40,6 @@ class DemoJsonSchema(BaseJsonSchema):
                 "id",
                 "name",
                 "entry_date",
-                "decimal_number",
+                "decimal_value",
             ],
         }
