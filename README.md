@@ -56,6 +56,7 @@ TIMEZONE = "Europe/Vienna"
 ### Enable pre-commit
 
 ```shell script
+pre-commit install
 pre-commit run --all-files
 ```
 
@@ -99,9 +100,8 @@ coverage report
 coverage report --show-missing  # also print uncovered lines
 ```
 
-Create html output and store it into `htmlcov` folder. 
+Create html output and store it into `htmlcov` folder.
 
 ```shell script
 coverage html
 ```
-
