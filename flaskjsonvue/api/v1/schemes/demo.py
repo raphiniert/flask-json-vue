@@ -2,7 +2,7 @@ from flaskjsonvue.api.v1.schemes.base import BaseJsonSchema
 
 
 class DemoJsonSchema(BaseJsonSchema):
-    title = "Demo"
+    name = "Demo"
     description = "Demo JSON Object"
     relations = []
 
@@ -11,28 +11,28 @@ class DemoJsonSchema(BaseJsonSchema):
         return {
             "$schema": "https://json-schema.org/draft/2020-12/schema",
             "$id": f"{cls.schema_base_url()}/detail.schema.json",
-            "title": cls.title,
+            "title": cls.name,
             "description": cls.description,
             "type": "object",
             "relations": cls.relations,
             "properties": {
                 "id": {
-                    "description": f"The {cls.title.lower()}'s unique identifier",
+                    "description": f"The {cls.name.lower()}'s unique identifier",
                     "type": "integer",
                     "min": 1,
                 },
                 "name": {
                     "type": ["string", "null"],
-                    "description": f"The {cls.title.lower()}' name.",
+                    "description": f"The {cls.name.lower()}' name.",
                     "minLength": 1,
                 },
                 "entry_date": {
-                    "description": f"The {cls.title.lower()}'s entry date.",
+                    "description": f"The {cls.name.lower()}'s entry date.",
                     "type": "string",
                     "format": "date-time",
                 },
                 "decimal_number": {
-                    "description": f"The {cls.title.lower()}'s decimal number.",
+                    "description": f"The {cls.name.lower()}'s decimal number.",
                     "type": "number",
                 },
             },
