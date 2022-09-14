@@ -20,6 +20,25 @@ def test_demo_scheme(client, endpoint):
     assert response.is_json
 
 
+def test_demo_api_add(client):
+    """
+    TODO:
+    :param client:
+    """
+    response = client.post(
+        f"{URL_PREFIX}/add",
+        json={
+            "name": "Test Name",
+            "entry_date": "2022-01-01T00:00:00+01:00",
+            "decimal_value": 1.0,
+        },
+    )
+
+    assert response.status_code == 201
+    assert response.is_json
+    assert b"Created new demo with id:" in response.data
+
+
 def test_demo_api_list(client):
     """
     test demo api list
