@@ -35,7 +35,6 @@ def create():
     }
     if len(response["errors"]):
         logger.error(f"Data not valid! Errors: {response['errors']}")
-        response["status"] = "failure"
         response["errors"].append(response["errors"])
         return jsonify(response), 400
 
@@ -53,3 +52,100 @@ def create():
     )
     response["objects"].append(obj.json)
     return jsonify(response), 201
+
+
+@bp.route("/get/<int:obj_id>", methods=("GET",))
+def get(obj_id):
+    response = {
+        "messages": [],
+        "infos": [],
+        "warnings": [],
+        "errors": [],
+        "objects": [],
+    }
+    obj = Demo.query.get(obj_id)
+    if obj:
+        response["objects"].append(obj.json)
+        return jsonify(response), 200
+
+    response["errors"].append(
+        {"object_id": f"No {DemoJsonSchema.name.lower()} with id: {obj_id} available"}
+    )
+    return jsonify(response), 404
+
+
+@bp.route("/update", methods=("PATCH",))
+def update():
+    response = {
+        "messages": [],
+        "infos": [],
+        "warnings": [],
+        "errors": validate_json_request(
+            request=request, json_schema=DemoJsonSchema.update()
+        ),
+        "objects": [],
+    }
+    if len(response["errors"]):
+        logger.error(f"Data not valid! Errors: {response['errors']}")
+        response["errors"].append(response["errors"])
+        return jsonify(response), 400
+
+    # no errors, data is valid
+    valid_data = request.json
+
+    obj = Demo.query.get(valid_data["id"])
+    if obj:
+        obj.update(**valid_data)
+        db.session.add(obj)
+        db.session.commit()
+        logger.info(f"Updated {obj}")
+
+        response["infos"].append(
+            f"Updated {DemoJsonSchema.name.lower()} with id: {obj.id}"
+        )
+        response["objects"].append(obj.json)
+        return jsonify(response), 200
+
+    response["errors"].append(
+        {
+            "object_id": f"No {DemoJsonSchema.name.lower()} with id: {valid_data['id']} available"
+        }
+    )
+    return jsonify(response), 404
+
+
+@bp.route("/delete", methods=("DELETE",))
+def delete():
+    response = {
+        "messages": [],
+        "infos": [],
+        "warnings": [],
+        "errors": validate_json_request(
+            request=request, json_schema=DemoJsonSchema.delete()
+        ),
+        "objects": [],
+    }
+    if len(response["errors"]):
+        logger.error(f"Data not valid! Errors: {response['errors']}")
+        response["errors"].append(response["errors"])
+        return jsonify(response), 400
+
+    # no errors, data is valid
+    valid_data = request.json
+
+    obj = Demo.query.get(valid_data["id"])
+    if obj:
+        db.session.delete(obj)
+        db.session.commit()
+        logger.info(f"Deleted {obj}")
+        response["infos"].append(
+            f"Deleted {DemoJsonSchema.name.lower()} with id: {obj.id}"
+        )
+        return jsonify(response), 200
+
+    response["errors"].append(
+        {
+            "object_id": f"No {DemoJsonSchema.name.lower()} with id: {valid_data['id']} available"
+        }
+    )
+    return jsonify(response), 400
