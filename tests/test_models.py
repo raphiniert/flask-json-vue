@@ -61,7 +61,12 @@ class JsonModelTest(unittest.TestCase):
 
         cls.named_object = NamedObject("test")
         cls.nameless_object = NamelessObject()
-        cls.demo_object = Demo(id=1, name="demo")
+        cls.demo_object = Demo(
+            id=1,
+            name="demo",
+            decimal_value=1.0,
+            entry_date="2022-01-01T01:23:45+01:00",
+        )
 
     def setUp(self) -> None:
         """Set up run once for every test method"""
@@ -85,7 +90,12 @@ class JsonModelTest(unittest.TestCase):
     def test_json_model_json(self):
         assert self.demo_object.json == {
             "meta": {"display_name": "demo"},
-            "data": {"id": 1, "name": "demo"},
+            "data": {
+                "decimal_value": 1.0,
+                "entry_date": "2022-01-01T01:23:45+01:00",
+                "id": 1,
+                "name": "demo",
+            },
         }
 
     def test_json_model_json_no_table(self):
@@ -113,7 +123,12 @@ class DemoTest(unittest.TestCase):
     def setUpClass(cls):
         """Setup test data once for all class methods"""
 
-        cls.demo_object = Demo(id=1, name="demo")
+        cls.demo_object = Demo(
+            id=1,
+            name="demo",
+            decimal_value=1.0,
+            entry_date="2022-01-01T00:00:00+01:00",
+        )
 
     def setUp(self) -> None:
         """Set up run once for every test method"""
