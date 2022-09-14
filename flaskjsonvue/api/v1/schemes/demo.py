@@ -1,7 +1,7 @@
 from flaskjsonvue.api.v1.schemes.base import BaseJsonSchema
 
 
-class DemoSchema(BaseJsonSchema):
+class DemoJsonSchema(BaseJsonSchema):
     title = "Demo"
     description = "Demo JSON Object"
     relations = []
