@@ -1,6 +1,7 @@
 import logging
 
 from flask import Blueprint, jsonify, request
+from jsonschema import FormatChecker, ValidationError, Draft202012Validator, validate
 
 from flaskjsonvue.api.v1.schemes.demo import DemoJsonSchema
 
@@ -16,6 +17,34 @@ ENDPOINT_SCHEMA_MAPPING = {
 def get_schema_from_url(url):
     endpoint = url.split(bp.url_prefix)[0].split("/")[-1]
     return ENDPOINT_SCHEMA_MAPPING[endpoint]
+
+
+def validate_json_request(request, json_schema):
+    """
+    Verify that request is a json request and validate the given schema
+    Return list of errors
+    :param request: flask request
+    :param json_schema: json schema to apply
+    """
+    errors = []
+    if not request.is_json:
+        errors.append({"Request": "Only json requests are accepted!"})
+        return errors
+
+    try:
+        validate(
+            instance=request.json,
+            schema=json_schema,
+            format_checker=FormatChecker(),
+        )
+    except ValidationError as e:
+        v = Draft202012Validator(json_schema, format_checker=FormatChecker())
+        errors = [
+            {"field": error.path.pop(), "message": error.message}
+            for error in v.iter_errors(request.json)
+        ]
+
+    return errors
 
 
 @bp.route("/detail.schema.json", methods=("GET",))
