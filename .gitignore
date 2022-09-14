@@ -35,3 +35,6 @@ venv/
 
 # os specific
 .DS_Store
+
+# npm
+node_modules/
