@@ -3,8 +3,8 @@ from flaskjsonvue.api.v1.schemes.base import BaseJsonSchema
 
 class DemoJsonSchema(BaseJsonSchema):
     name = "Demo"
-    description = "Demo JSON Object"
-    relations = []
+    description = "Demo JSON object"
+    relations = {}
 
     @classmethod
     def detail(cls):
@@ -22,8 +22,8 @@ class DemoJsonSchema(BaseJsonSchema):
                     "min": 1,
                 },
                 "name": {
-                    "type": ["string", "null"],
-                    "description": f"The {cls.name.lower()}' name.",
+                    "type": "string",
+                    "description": f"The {cls.name.lower()}'s name.",
                     "minLength": 1,
                 },
                 "entry_date": {
