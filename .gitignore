@@ -38,3 +38,4 @@ venv/
 
 # npm
 node_modules/
+dist/
