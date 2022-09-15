@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}{% endblock %}</title>
+    <link href="{{ url_for('static', filename='dist/main.css') }}" rel="stylesheet" />
     {% block customcss %}
         {# include custom css files #}
     {% endblock %}
@@ -18,6 +19,7 @@
         {# put content here #}
     {% endblock %}
     </div>
+    <script src="{{ url_for('static', filename='dist/main.js') }}"></script>
     {% block scripts %}
         {# include custom js files #}
     {% endblock %}
