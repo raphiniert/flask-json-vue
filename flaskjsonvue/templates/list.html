@@ -8,10 +8,10 @@
 {% block content %}
 <h1>This is the {{ obj_type }} index page.</h1>
  <div id="app">
-    No list component yet.
+    <list-component></list-component>
 </div>
 {% endblock %}
 
 {% block scripts %}
-  {# TODO: import vue app #}
+  <script src="{{ url_for('static', filename='dist/list.js') }}"></script>
 {% endblock %}#
