@@ -13,6 +13,11 @@ flask json api and vue
     │   ├── client              # client blueprints
     │   │   └── demo.py         # demo client routes, redering jinja templates
     │   ├── templates           # Jinja templates
+    │   ├── static              # static files
+    │   │   ├── dist            # webpack output files
+    │   │   ├── js              # custom js files
+    │   │   ├── scss            # custom scss files
+    │   │   └── vue             # vue files and components
     │   ├── __init__.py         # create app
     │   ├── db.py               # db setup
     │   └── models.py           # database models
@@ -25,8 +30,12 @@ flask json api and vue
     │   └── contest.py          # test config, app and client fixtures
     ├── .flaskenv               # define app to and environment
     ├── .pre-commit-config.yml  # pre commit config
-    ├── README.md               # This readme file
-    └── requirements.txt        # list of version pinned python dependencies
+    ├── package-lock.json       # package-lock.json
+    ├── package.json            # node modules to install, scripts
+    ├── README.md               # this readme file
+    ├── requirements.txt        # list of version pinned python dependencies
+    ├── setup.cfg               # pytest config file
+    └── webpack.cfonfig.js      # webpack config
 
 ## Setup
 
