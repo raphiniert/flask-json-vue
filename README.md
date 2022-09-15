@@ -63,6 +63,13 @@ pre-commit install
 pre-commit run --all-files
 ```
 
+### Install node modules and build static dist files
+
+```shell script
+npm i
+npm run build
+```
+
 ## Run
 
 Simply type ```flask run``` on your command line and you are good to go.
