@@ -6,9 +6,8 @@
 {% endblock %}
 
 {% block content %}
-<h1>This is the {{ obj_type }} index page.</h1>
  <div id="app">
-    <list-component></list-component>
+    <list-component obj-type="{{ obj_type }}"></list-component>
 </div>
 {% endblock %}
 

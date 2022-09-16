@@ -9,4 +9,4 @@ def test_demo_client_index(client):
     # assert status code
     assert response.status_code == 200
     # assert content
-    assert b"<h1>This is the demo index page.</h1>" in response.data
+    assert b'<list-component obj-type="demo"></list-component>' in response.data
