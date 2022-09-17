@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ obj_type|capitalize }}{% endblock %}
+
+{% block customcss %}
+{% endblock %}
+
+{% block content %}
+ <div id="app">
+    <h1>This will be the {{ obj_type }} detail component</h1>
+    {% if obj_id is defined %}
+        {{ obj_type }} id: {{ obj_id }}
+    {% else %}
+        No {{ obj_type }} id set
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}#
