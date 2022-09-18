@@ -35,7 +35,6 @@ def create():
     }
     if len(response["errors"]):
         logger.error(f"Data not valid! Errors: {response['errors']}")
-        response["errors"].append(response["errors"])
         return jsonify(response), 400
 
     # no errors, data is valid
@@ -87,7 +86,6 @@ def update():
     }
     if len(response["errors"]):
         logger.error(f"Data not valid! Errors: {response['errors']}")
-        response["errors"].append(response["errors"])
         return jsonify(response), 400
 
     # no errors, data is valid
@@ -127,7 +125,6 @@ def delete():
     }
     if len(response["errors"]):
         logger.error(f"Data not valid! Errors: {response['errors']}")
-        response["errors"].append(response["errors"])
         return jsonify(response), 400
 
     # no errors, data is valid
