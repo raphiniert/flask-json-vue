@@ -8,6 +8,7 @@ module.exports = {
   entry: {
     'main': './flaskjsonvue/static/js/main.js',
     'list': './flaskjsonvue/static/vue/list.js',
+    'detail': './flaskjsonvue/static/vue/detail.js',
   },
   output: {
     path: path.resolve(__dirname, 'flaskjsonvue/static/dist'),
