@@ -1,6 +1,7 @@
 import logging
 
 from datetime import datetime
+from decimal import Decimal
 from sqlalchemy import func, DateTime
 
 from flaskjsonvue.db import db
@@ -57,6 +58,8 @@ class JsonModel(DisplayName):
     def __format_json_value(self, value):
         if isinstance(value, datetime):
             return value.astimezone().isoformat()
+        if isinstance(value, Decimal):
+            return float(value)
         return value
 
 
