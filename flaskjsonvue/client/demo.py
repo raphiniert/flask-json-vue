@@ -15,3 +15,8 @@ def index():
 @bp.route("/add", methods=("GET",))
 def create():
     return render_template(f"detail.html", obj_type=bp.name)
+
+
+@bp.route("/update/<int:obj_id>", methods=("GET",))
+def update(obj_id):
+    return render_template(f"detail.html", obj_type=bp.name, obj_id=obj_id)
