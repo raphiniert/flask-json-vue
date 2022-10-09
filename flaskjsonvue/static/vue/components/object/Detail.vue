@@ -1,6 +1,7 @@
 <script setup>
-  import { computed } from '@vue/reactivity';
-import { onMounted, ref } from 'vue'
+  import { computed, onMounted, ref } from 'vue'
+  // import custom date-time input component
+  import DateTimeInput from '../input/datetime.vue'
 
   // declare props
   const props = defineProps({
@@ -13,6 +14,13 @@ import { onMounted, ref } from 'vue'
   const schema = ref({});
   const loadedObject = ref(false);
   const loadedSchema = ref(false);
+
+  function formSubmit(){
+    if(props.objId) {
+      updateObject()
+    }
+    addObject()
+  }
 
   // functions that mutate state and trigger updates
   /**
@@ -41,7 +49,7 @@ import { onMounted, ref } from 'vue'
     if(gResponse.status == 201) {
         // show success message
         obj.value = response.objects[0];
-        this.errors = [];
+        this.errors = response.errors;
       } else {
         this.errors = response.errors;
         console.error(`Couldn't add ${props.objType}!`)
@@ -61,7 +69,7 @@ import { onMounted, ref } from 'vue'
     if (jsonSchemaType.includes("integer") || jsonSchemaType.includes("number")) {
       return "number";
     } else if (jsonSchemaType.includes("date-time")) {
-      return "datetime-local";
+      return "datetime";
     }
 
     // fallback to text
@@ -88,20 +96,27 @@ import { onMounted, ref } from 'vue'
       </div>
     </div>
     <!-- do not display id property -->
-    <template v-for="(prop, name, index) in schema.properties" :key="index" class="row">
-      <div v-if="name != 'id'" class="row">
-        <div class="col">
-          <label :for="`${props.objType}-prop-${name}`">{{ name }}</label>
-          <input v-model="obj[name]" :id="`${props.objType}-prop-${name}`" :type="getInputType(prop)">
+    <form @submit.prevent="formSubmit()">
+      <template v-for="(prop, name, index) in schema.properties" :key="index" class="row">
+        <div v-if="name != 'id'" class="row">
+          <div v-if="getInputType(prop) == 'datetime'" class="col">
+            <DateTimeInput v-model="obj[name]" :propertyName="name" :objType="props.objType" />
+          </div>
+          <div v-else class="col">
+            <label :for="`${props.objType}-prop-${name}`">{{ name }}</label>
+            <input v-model="obj[name]" :id="`${props.objType}-prop-${name}`" :type="getInputType(prop)">
+          </div>
         </div>
+      </template>
+      <div v-if="obj.id" class="row">
+        <!-- TODO: update object -->
+        <button>Update</button>
+        <button @click="deleteObject()" type="button">Delete</button>
       </div>
-    </template>
-    <div v-if="obj.id" class="row">
-      <!-- TODO: update object -->
-    </div>
-    <div v-else>
-      <button @click="addObject(obj)" type="button" class="btn btn-outline-primary">Add new {{ this.objType }}</button>
-    </div>
+      <div v-else>
+        <button class="btn btn-outline-primary">Add new {{ this.objType }}</button>
+      </div>
+    </form>
   </template>
   <template v-else>
     <div class="row">
