@@ -132,6 +132,14 @@
     return "text";
   }
 
+  // computed properties
+  function isRequired(propertyName) {
+    if (loadedSchema) {
+      return schema.value.required.includes(propertyName);
+    }
+    return false;
+  }
+
   // lifecycle hooks
   onMounted(() => {
     console.log(`Initial log message.`, props.objType, props.objId);
@@ -166,11 +174,11 @@
           </div>
           <div v-else-if="getInputType(prop) == 'number'" class="col">
             <label :for="`${props.objType}-prop-${name}`">{{ name }}</label>
-            <input v-model="obj[name]" :id="`${props.objType}-prop-${name}`" type="number" class="form-control" step="0.000001">
+            <input v-model="obj[name]" :id="`${props.objType}-prop-${name}`" type="number" class="form-control" step="0.000001" :required="isRequired(name)">
           </div>
           <div v-else class="col form-group">
             <label :for="`${props.objType}-prop-${name}`">{{ name }}</label>
-            <input v-model="obj[name]" :id="`${props.objType}-prop-${name}`" :type="getInputType(prop)" class="form-control">
+            <input v-model="obj[name]" :id="`${props.objType}-prop-${name}`" :type="getInputType(prop)" class="form-control" :required="isRequired(name)">
           </div>
         </div>
       </template>
