@@ -40,11 +40,28 @@ def validate_json_request(request, json_schema):
     except ValidationError as e:
         v = Draft202012Validator(json_schema, format_checker=FormatChecker())
         errors = [
-            {"field": error.path.pop(), "message": error.message}
+            {"field": get_error_field(error), "message": get_error_message(error)}
             for error in v.iter_errors(request.json)
         ]
 
     return errors
+
+
+def get_error_field(error):
+    if error.validator == "required":
+        # error.message looks like "'field' is a required property"
+        return error.message.split("'")[1]
+    elif len(error.path):
+        return error.path.pop()
+
+    logger.error(f"Handling of error: {error} not implemented.")
+    raise NotImplementedError
+
+
+def get_error_message(error):
+    # erroo.message looks like '' is too short
+    # or 'field' is a required property
+    return " ".join(error.message.split(" ")[1:])
 
 
 @bp.route("/detail.schema.json", methods=("GET",))
