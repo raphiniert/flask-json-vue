@@ -12,7 +12,15 @@
       default: DateTime.now().toISO()
     },
     objType: String,
-    propertyName: String
+    propertyName: String,
+    hasError: {
+      type: Boolean,
+      default: false
+    },
+    validated: {
+      type: Boolean,
+      default: false
+    }
   })
 
   const emit = defineEmits(['update:modelValue'])
@@ -57,6 +65,16 @@
     }
   })
 
+  function validClass() {
+    if(!props.validated) {
+      return ""
+    }
+    if (props.hasError) {
+      return "is-invalid";
+    }
+    return "is-valid";
+  }
+
   // lifecycle hooks
   onMounted(() => {
     emit('update:modelValue', `${computedDate.value}T${computedTime.value}${computedOffset.value}`)
@@ -68,16 +86,16 @@
   <div class="row">
     <div class="col form-group">
       <label :for="`${props.objType}-prop-${props.propertyName}-date`">{{ props.propertyName }} date</label>
-      <input v-model="computedDate" :id="`${props.objType}-prop-${props.propertyName}-date`" type="date" class="form-control" required>
+      <input v-model="computedDate" :id="`${props.objType}-prop-${props.propertyName}-date`" type="date" :class="`form-control ${validClass()}`" required>
     </div>
     <div class="col form-group">
       <label :for="`${props.objType}-prop-${props.propertyName}-time`">{{ props.propertyName }} time</label>
-      <input v-model="computedTime" :id="`${props.objType}-prop-${props.propertyName}-time`" step="0.001" type="time" class="form-control" required>
+      <input v-model="computedTime" :id="`${props.objType}-prop-${props.propertyName}-time`" step="0.001" type="time" :class="`form-control ${validClass()}`" required>
     </div>
     <div class="col form-group">
       <label :for="`${props.objType}-prop-${props.propertyName}-offset`">{{ props.propertyName }} offset</label>
       <!-- TODO: complete list of 38 utc offsets -->
-      <select v-model="computedOffset" :id="`${props.objType}-prop-${props.propertyName}-offset`" class="form-control" required>
+      <select v-model="computedOffset" :id="`${props.objType}-prop-${props.propertyName}-offset`" :class="`form-control ${validClass()}`" required>
         <option value="-02:00">-02:00</option>
         <option value="-01:00">-01:00</option>
         <option value="+00:00">+00:00</option>

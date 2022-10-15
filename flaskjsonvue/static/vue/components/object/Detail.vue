@@ -11,9 +11,11 @@
 
   // reactive state
   const obj = ref({});
+  const errors = ref([])
   const schema = ref({});
   const loadedObject = ref(false);
   const loadedSchema = ref(false);
+  const validated = ref(false);
 
   function formSubmit(){
     if(loadedObject.value) {
@@ -21,6 +23,7 @@
     } else {
       addObject()
     }
+    validated.value = true
   }
 
   // functions that mutate state and trigger updates
@@ -55,6 +58,7 @@
       obj.value = response.objects[0].data;
       window.location = `http://0.0.0.0:5000/${props.objType}/update/${obj.value.id}`
     } else {
+      errors.value = response.errors
       console.error(`Couldn't add ${props.objType}!`)
     }
   }
@@ -88,7 +92,9 @@
     if(gResponse.status == 200) {
       // show success message
       obj.value = response.objects[0].data;
+      errors.value = []
     } else {
+      errors.value = response.errors;
       console.error(`Couldn't update ${props.objType} with id: ${props.objId}!`)
     }
   }
@@ -132,12 +138,40 @@
     return "text";
   }
 
-  // computed properties
   function isRequired(propertyName) {
     if (loadedSchema) {
       return schema.value.required.includes(propertyName);
     }
     return false;
+  }
+
+  function hasError(propertyName) {
+    // iterate errors array
+    return errors.value.some(element => {
+      if(element.field == propertyName){
+        return true;
+      }
+    });
+  }
+
+  function getErrorMessages(propertyName) {
+    const errorMessages = []
+    errors.value.find(element => {
+      if(element.field == propertyName){
+        errorMessages.push(element.message)
+      }
+    });
+    return errorMessages
+  }
+
+  function validClass(name) {
+    if(!validated.value) {
+      return ""
+    }
+    if (hasError(name)) {
+      return "is-invalid";
+    }
+    return "is-valid";
   }
 
   // lifecycle hooks
@@ -166,19 +200,29 @@
       </div>
     </div>
     <!-- do not display id property -->
-    <form @submit.prevent="formSubmit()">
+    <form @submit.prevent="formSubmit()" class="needs-validation" novalidate>
       <template v-for="(prop, name, index) in schema.properties" :key="index" class="row">
         <div v-if="name != 'id'" class="row">
           <div v-if="getInputType(prop) == 'datetime'" class="col">
-            <DateTimeInput v-model="obj[name]" :propertyName="name" :objType="props.objType" />
+            <DateTimeInput v-model="obj[name]" :propertyName="name" :objType="props.objType" :hasError="hasError(name)" :validated="validated"/>
           </div>
-          <div v-else-if="getInputType(prop) == 'number'" class="col">
+          <div v-else-if="getInputType(prop) == 'number'" class="col form-group has-validation">
             <label :for="`${props.objType}-prop-${name}`">{{ name }}</label>
-            <input v-model="obj[name]" :id="`${props.objType}-prop-${name}`" type="number" class="form-control" step="0.000001" :required="isRequired(name)">
+            <input v-model="obj[name]" :id="`${props.objType}-prop-${name}`" type="number" :class="`form-control ${validClass(name)}`" step="0.000001" :required="isRequired(name)">
+            <div class="invalid-feedback" v-if="hasError(name)">
+              <ul v-for="(message, index) in getErrorMessages(name)" :key="index">
+                <li>{{ message }}</li>
+              </ul>
+            </div>
           </div>
-          <div v-else class="col form-group">
+          <div v-else class="col form-group has-validation">
             <label :for="`${props.objType}-prop-${name}`">{{ name }}</label>
-            <input v-model="obj[name]" :id="`${props.objType}-prop-${name}`" :type="getInputType(prop)" class="form-control" :required="isRequired(name)">
+            <input v-model="obj[name]" :id="`${props.objType}-prop-${name}`" :type="getInputType(prop)" :class="`form-control ${validClass(name)}`" :required="isRequired(name)">
+            <div class="invalid-feedback" v-if="hasError(name)">
+              <ul v-for="(message, index) in getErrorMessages(name)" :key="index">
+                <li>{{ message }}</li>
+              </ul>
+            </div>
           </div>
         </div>
       </template>
