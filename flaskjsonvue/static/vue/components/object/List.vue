@@ -82,8 +82,11 @@ onMounted(() => {
   <template v-else>
     <div class="row">
       <div class="col">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
         <p>
-          Not yet loaded...
+          Loading {{ props.objType }} list view.
         </p>
       </div>
     </div>
