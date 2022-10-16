@@ -25,8 +25,8 @@ def list():
 @bp.route("/add", methods=("POST",))
 def create():
     response = {
-        "messages": [],
         "infos": [],
+        "success": [],
         "warnings": [],
         "errors": validate_json_request(
             request=request, json_schema=DemoJsonSchema.create()
@@ -46,7 +46,7 @@ def create():
     db.session.commit()
     logger.info(f"Created new: {obj}")
 
-    response["infos"].append(
+    response["success"].append(
         f"Created new {DemoJsonSchema.name.lower()} with id: {obj.id}"
     )
     response["objects"].append(obj.json)
@@ -56,8 +56,8 @@ def create():
 @bp.route("/get/<int:obj_id>", methods=("GET",))
 def get(obj_id):
     response = {
-        "messages": [],
         "infos": [],
+        "success": [],
         "warnings": [],
         "errors": [],
         "objects": [],
@@ -76,8 +76,8 @@ def get(obj_id):
 @bp.route("/update", methods=("PATCH",))
 def update():
     response = {
-        "messages": [],
         "infos": [],
+        "success": [],
         "warnings": [],
         "errors": validate_json_request(
             request=request, json_schema=DemoJsonSchema.update()
@@ -98,7 +98,7 @@ def update():
         db.session.commit()
         logger.info(f"Updated {obj}")
 
-        response["infos"].append(
+        response["success"].append(
             f"Updated {DemoJsonSchema.name.lower()} with id: {obj.id}"
         )
         response["objects"].append(obj.json)
@@ -115,8 +115,8 @@ def update():
 @bp.route("/delete", methods=("DELETE",))
 def delete():
     response = {
-        "messages": [],
         "infos": [],
+        "success": [],
         "warnings": [],
         "errors": validate_json_request(
             request=request, json_schema=DemoJsonSchema.delete()
@@ -135,7 +135,7 @@ def delete():
         db.session.delete(obj)
         db.session.commit()
         logger.info(f"Deleted {obj}")
-        response["infos"].append(
+        response["success"].append(
             f"Deleted {DemoJsonSchema.name.lower()} with id: {obj.id}"
         )
         return jsonify(response), 200
