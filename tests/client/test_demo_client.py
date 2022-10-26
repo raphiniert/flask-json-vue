@@ -9,5 +9,4 @@ def test_demo_client_index(client):
     # assert status code
     assert response.status_code == 200
     # assert content
-    # print(response.data)
-    # assert b"<router-view>" in response.data
+    assert b'<div id="app">' in response.data
