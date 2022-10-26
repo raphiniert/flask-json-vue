@@ -11,15 +11,15 @@
     {% endblock %}
   </head>
   <body>
-    <a href="/">Home</a>
-    {# <a href="{{ url_for('finance.index') }}">Finances</a> #}
-    <a href="{{ url_for('demo.index') }}">Demo</a>
-    <div class="container">
-    {% block content %}
-        {# put content here #}
-    {% endblock %}
+    <div id="app">
+      <router-link to="/">Home</router-link>
+      <router-link to="/demo">Demo</router-link>
+      <div class="container">
+        <router-view></router-view>
+      </div>
     </div>
     <script src="{{ url_for('static', filename='dist/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='dist/object.js') }}"></script>
     {% block scripts %}
         {# include custom js files #}
     {% endblock %}
