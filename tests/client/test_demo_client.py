@@ -8,5 +8,6 @@ def test_demo_client_index(client):
     response = client.get("/")
     # assert status code
     assert response.status_code == 200
+
     # assert content
     assert b'<div id="app">' in response.data
