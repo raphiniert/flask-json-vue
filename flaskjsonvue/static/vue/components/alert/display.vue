@@ -30,7 +30,7 @@
     <ul class="mb-0 d-inline-block">
       <li v-for="alert in props.alerts">
         <template v-if="props.alertType === 'danger'">
-          <a :href="`#${props.objType}-prop-${alert.field}`" class="alert-link">{{ alert.field }}</a>: {{ alert.message }}
+          <router-link :to="{ hash: `#${props.objType}-prop-${alert.field}`}" class="alert-link">{{ alert.field }}</router-link> {{ alert.message }}
         </template>
         <template v-else>
           {{ alert }}

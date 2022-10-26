@@ -1,6 +1,6 @@
 // stores/object.js
 import { defineStore } from 'pinia'
-
+import { useRoute } from 'vue-router'
 
 export default defineStore('object', {
     state: () => {
@@ -30,7 +30,8 @@ export default defineStore('object', {
         return this.objectList.find(element => element.data.id == objId)
       },
       async getObjectList() {
-        const gResponse = await fetch(`http://0.0.0.0:5000/api/v1/${this.objType}/list`);
+        const route = useRoute()
+        const gResponse = await fetch(`http://0.0.0.0:5000/api/v1/${route.params.objtype}/list`);
         if(gResponse.status == 200) {
           this.$patch({
             objectList: await gResponse.json(),

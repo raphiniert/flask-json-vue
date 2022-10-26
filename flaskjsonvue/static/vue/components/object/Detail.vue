@@ -1,15 +1,19 @@
 <script setup>
+  import { useRouter, useRoute } from 'vue-router'
   import { computed, onMounted, ref } from 'vue'
+
+  // import object store
+  import useObjectStore from '../../stores/object'
+
 
   // import custom date-time input component
   import DateTimeInput from '../input/datetime.vue'
   import alertDisplay from '../alert/display.vue'
 
-  // declare props
-  const props = defineProps({
-    objType: String,
-    objId: {type: Number, default: null}
-  })
+  const store = useObjectStore()
+
+  const router = useRouter()
+  const route = useRoute()
 
   // reactive state
   const obj = ref({});
@@ -36,7 +40,7 @@
    * fetch detail json schema for object type, store in schema and set loadedSchema value
    */
   async function getObjectDetailSchema() {
-    const gResponse = await fetch(`http://0.0.0.0:5000/api/v1/${props.objType}/schema/detail.schema.json`);
+    const gResponse = await fetch(`http://0.0.0.0:5000/api/v1/${route.params.objtype}/schema/detail.schema.json`);
     if(gResponse.status == 200) {
       schema.value = await gResponse.json();
       loadedSchema.value = true;
@@ -50,7 +54,7 @@
    * post new objType object, store data in obj on success
    */
   async function addObject() {
-    const gResponse = await fetch(`http://0.0.0.0:5000/api/v1/${props.objType}/add`, {
+    const gResponse = await fetch(`http://0.0.0.0:5000/api/v1/${route.params.objtype}/add`, {
       method: "POST",
       headers:{
         "Content-Type":"application/json"
@@ -65,10 +69,12 @@
       warnings.value = response.warnings
       infos.value = response.infos
       success.value = response.success
-      window.location = `http://0.0.0.0:5000/${props.objType}/update/${obj.value.id}`
+      loadedObject.value = true;
+      store.getObjectList()
+      window.location = `http://0.0.0.0:5000/#/${route.params.objtype}/update/${obj.value.id}`
     } else {
       errors.value = response.errors
-      console.error(`Couldn't add ${props.objType}!`)
+      console.error(`Couldn't add ${route.params.objtype}!`)
     }
   }
 
@@ -76,7 +82,7 @@
    * fetch object with prop objId
    */
   async function getObject() {
-    const gResponse = await fetch(`http://0.0.0.0:5000/api/v1/${props.objType}/get/${props.objId}`);
+    const gResponse = await fetch(`http://0.0.0.0:5000/api/v1/${route.params.objtype}/get/${route.params.id}`);
     const response = await gResponse.json();
     if(gResponse.status == 200) {
       obj.value = response.objects[0].data;
@@ -87,7 +93,7 @@
       infos.value = response.infos
     } else {
       errors.value = response.errors
-      console.error(`Couldn't get ${props.objType} with id: ${props.objId}!`)
+      console.error(`Couldn't get ${route.params.objtype} with id: ${route.params.id}!`)
     }
   }
 
@@ -95,7 +101,7 @@
    * patch object, store data in obj on success
    */
   async function updateObject() {
-    const gResponse = await fetch(`http://0.0.0.0:5000/api/v1/${props.objType}/update`, {
+    const gResponse = await fetch(`http://0.0.0.0:5000/api/v1/${route.params.objtype}/update`, {
       method: "PATCH",
       headers:{
         "Content-Type":"application/json"
@@ -110,34 +116,17 @@
       warnings.value = response.warnings
       success.value = response.success
       infos.value = response.infos
+      store.getObjectList()
     } else {
       errors.value = response.errors;
-      console.error(`Couldn't update ${props.objType} with id: ${props.objId}!`)
+      console.error(`Couldn't update ${route.params.objtype} with id: ${route.params.id}!`)
     }
   }
 
-  /**
-   * delete object set window location to objType route
-   */
-  async function deleteObject() {
-    const gResponse = await fetch(`http://0.0.0.0:5000/api/v1/${props.objType}/delete`, {
-      method: "DELETE",
-      headers:{
-        "Content-Type":"application/json"
-      },
-      body: JSON.stringify(obj.value)
-    });
-    const response = await gResponse.json();
-    if(gResponse.status == 200) {
-      errors.value = response.errors
-      warnings.value = response.warnings
-      success.value = response.success
-      infos.value = response.infos
-      window.location = `http://0.0.0.0:5000/${props.objType}`;
-    } else {
-      errors.value = response.errors
-      console.error(`Couldn't delete ${props.objType} with id: ${props.objId}!`)
-    }
+  async function deleteObject(objId) {
+    store.deleteObject(objId)
+    store.getObjectList()
+    window.location = `http://0.0.0.0:5000/#/${route.params.objtype}`
   }
 
   /**
@@ -198,22 +187,22 @@
 
   // lifecycle hooks
   onMounted(() => {
-    console.log(`Initial log message.`, props.objType, props.objId);
+    console.log(`Initial log message.`, route.params.objtype, route.params.id);
     getObjectDetailSchema();
     if (loadedSchema) {
-      console.log(`Successfuly loaded ${props.objType} schema.`)
+      console.log(`Successfuly loaded ${route.params.objtype} schema.`)
     }
-    if (props.objId) {
+    if (route.params.id) {
       getObject();
       if (loadedObject) {
-        console.log(`Successfuly loaded ${props.objType} object.`)
+        console.log(`Successfuly loaded ${route.params.objtype} object.`)
       }
     }
   })
 </script>
 
 <template>
-  <h1>{{ props.objType }} detail component</h1>
+  <h1>{{ route.params.objtype }} detail component</h1>
   <template v-if="loadedSchema">
     <h2>{{ schema.title }}</h2>
     <div class="row">
@@ -221,20 +210,20 @@
         {{ schema.description }}
       </div>
     </div>
-    <alertDisplay alert-type="danger" :obj-type="`${props.objType}`" :alerts="errors"></alertDisplay>
-    <alertDisplay alert-type="warning" :obj-type="`${props.objType}`" :alerts="warnings"></alertDisplay>
-    <alertDisplay alert-type="success" :obj-type="`${props.objType}`" :alerts="success"></alertDisplay>
-    <alertDisplay alert-type="info" :obj-type="`${props.objType}`" :alerts="infos"></alertDisplay>
+    <alertDisplay alert-type="danger" :obj-type=$route.params.objtype :alerts="errors"></alertDisplay>
+    <alertDisplay alert-type="warning" :obj-type=$route.params.objtype :alerts="warnings"></alertDisplay>
+    <alertDisplay alert-type="success" :obj-type=$route.params.objtype :alerts="success"></alertDisplay>
+    <alertDisplay alert-type="info" :obj-type=$route.params.objtype :alerts="infos"></alertDisplay>
     <!-- do not display id property -->
     <form @submit.prevent="formSubmit()" class="needs-validation" novalidate>
       <template v-for="(prop, name, index) in schema.properties" :key="index" class="row">
         <div v-if="name != 'id'" class="row">
           <div v-if="getInputType(prop) == 'datetime'" class="col">
-            <DateTimeInput v-model="obj[name]" :propertyName="name" :objType="props.objType" :hasError="hasError(name)" :validated="validated"/>
+            <DateTimeInput v-model="obj[name]" :propertyName="name" :objType="route.params.objtype" :hasError="hasError(name)" :validated="validated"/>
           </div>
           <div v-else-if="getInputType(prop) == 'number'" class="col form-group has-validation">
-            <label :for="`${props.objType}-prop-${name}`">{{ name }}</label>
-            <input v-model="obj[name]" :id="`${props.objType}-prop-${name}`" type="number" :class="`form-control ${validClass(name)}`" step="0.000001" :required="isRequired(name)">
+            <label :for="`${route.params.objtype}-prop-${name}`">{{ name }}</label>
+            <input v-model="obj[name]" :id="`${route.params.objtype}-prop-${name}`" type="number" :class="`form-control ${validClass(name)}`" step="0.000001" :required="isRequired(name)">
             <div class="invalid-feedback" v-if="hasError(name)">
               <ul v-for="(message, index) in getErrorMessages(name)" :key="index">
                 <li>{{ message }}</li>
@@ -242,8 +231,8 @@
             </div>
           </div>
           <div v-else class="col form-group has-validation">
-            <label :for="`${props.objType}-prop-${name}`">{{ name }}</label>
-            <input v-model="obj[name]" :id="`${props.objType}-prop-${name}`" :type="getInputType(prop)" :class="`form-control ${validClass(name)}`" :required="isRequired(name)">
+            <label :for="`${route.params.objtype}-prop-${name}`">{{ name }}</label>
+            <input v-model="obj[name]" :id="`${route.params.objtype}-prop-${name}`" :type="getInputType(prop)" :class="`form-control ${validClass(name)}`" :required="isRequired(name)">
             <div class="invalid-feedback" v-if="hasError(name)">
               <ul v-for="(message, index) in getErrorMessages(name)" :key="index">
                 <li>{{ message }}</li>
@@ -263,7 +252,7 @@
           </button>
         </div>
         <div class="col">
-          <button class="btn btn-outline-danger" @click="deleteObject()" type="button">
+          <button class="btn btn-outline-danger" @click="deleteObject(obj.id)" type="button">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-basket-fill" viewBox="0 0 16 16">
               <path d="M5.071 1.243a.5.5 0 0 1 .858.514L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15.5a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5H15v5a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9H.5a.5.5 0 0 1-.5-.5v-2A.5.5 0 0 1 .5 6h1.717L5.07 1.243zM3.5 10.5a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3z"/>
             </svg>
@@ -273,7 +262,7 @@
       </div>
       <div v-else class="row">
         <div class="col">
-          <button class="btn btn-outline-primary">Add new {{ this.objType }}</button>
+          <button class="btn btn-outline-primary">Add new {{ route.params.objtype }}</button>
         </div>
       </div>
     </form>
@@ -285,7 +274,7 @@
           <span class="visually-hidden">Loading...</span>
         </div>
         <p>
-          Loading {{ props.objType }} detail view.
+          Loading {{ route.params.objtype }} detail view.
         </p>
       </div>
     </div>
