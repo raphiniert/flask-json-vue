@@ -16,9 +16,6 @@ export default defineStore('object', {
     getters: {
     },
     actions: {
-      increment() {
-        this.count++
-      },
       activeObj(objId, objType) {
         return this.objects[objType].list.find(element => element.data.id == objId)
       },
