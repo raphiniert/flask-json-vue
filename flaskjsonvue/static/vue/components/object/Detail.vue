@@ -70,7 +70,7 @@
       infos.value = response.infos
       success.value = response.success
       loadedObject.value = true;
-      store.getObjectList()
+      store.getObjectList(route.params.objtype)
       window.location = `http://0.0.0.0:5000/#/${route.params.objtype}/update/${obj.value.id}`
     } else {
       errors.value = response.errors
@@ -116,7 +116,7 @@
       warnings.value = response.warnings
       success.value = response.success
       infos.value = response.infos
-      store.getObjectList()
+      store.getObjectList(route.params.objtype)
     } else {
       errors.value = response.errors;
       console.error(`Couldn't update ${route.params.objtype} with id: ${route.params.id}!`)
@@ -124,8 +124,8 @@
   }
 
   async function deleteObject(objId) {
-    store.deleteObject(objId)
-    store.getObjectList()
+    store.deleteObject(objId, route.params.objtype)
+    store.getObjectList(route.params.objtype)
     window.location = `http://0.0.0.0:5000/#/${route.params.objtype}`
   }
 
@@ -203,6 +203,10 @@
 
 <template>
   <h1>{{ route.params.objtype }} detail component</h1>
+  <alertDisplay alert-type="danger" :obj-type=$route.params.objtype :alerts="errors"></alertDisplay>
+  <alertDisplay alert-type="warning" :obj-type=$route.params.objtype :alerts="warnings"></alertDisplay>
+  <alertDisplay alert-type="success" :obj-type=$route.params.objtype :alerts="success"></alertDisplay>
+  <alertDisplay alert-type="info" :obj-type=$route.params.objtype :alerts="infos"></alertDisplay>
   <template v-if="loadedSchema">
     <h2>{{ schema.title }}</h2>
     <div class="row">
@@ -210,10 +214,6 @@
         {{ schema.description }}
       </div>
     </div>
-    <alertDisplay alert-type="danger" :obj-type=$route.params.objtype :alerts="errors"></alertDisplay>
-    <alertDisplay alert-type="warning" :obj-type=$route.params.objtype :alerts="warnings"></alertDisplay>
-    <alertDisplay alert-type="success" :obj-type=$route.params.objtype :alerts="success"></alertDisplay>
-    <alertDisplay alert-type="info" :obj-type=$route.params.objtype :alerts="infos"></alertDisplay>
     <!-- do not display id property -->
     <form @submit.prevent="formSubmit()" class="needs-validation" novalidate>
       <template v-for="(prop, name, index) in schema.properties" :key="index" class="row">

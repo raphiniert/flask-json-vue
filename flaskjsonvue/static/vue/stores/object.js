@@ -1,15 +1,10 @@
 // stores/object.js
 import { defineStore } from 'pinia'
-import { useRoute } from 'vue-router'
 
 export default defineStore('object', {
     state: () => {
       return {
-        count: 0,
-        objType: 'demo',
-        activeObjId: null,
-        objectList: [],
-        loadingObjects: true,
+        objects: {},
         alertMessages: {
             errors: [],
             warnings: [],
@@ -18,34 +13,39 @@ export default defineStore('object', {
         }
      }
     },
-    // could also be defined as
-    // state: () => ({ count: 0 })
     getters: {
     },
     actions: {
       increment() {
         this.count++
       },
-      activeObj(objId) {
-        return this.objectList.find(element => element.data.id == objId)
+      activeObj(objId, objType) {
+        return this.objects[objType].objectList.find(element => element.data.id == objId)
       },
-      async getObjectList() {
-        const route = useRoute()
-        const gResponse = await fetch(`http://0.0.0.0:5000/api/v1/${route.params.objtype}/list`);
+      async getObjectList(objType) {
+        console.log(`Getting object list for: ${objType}.`)
+        const gResponse = await fetch(`http://0.0.0.0:5000/api/v1/${objType}/list`);
         if(gResponse.status == 200) {
           this.$patch({
-            objectList: await gResponse.json(),
-            loadingObjects: false
-          })
+            objects: {
+              [objType]: {
+                list: await gResponse.json(),
+                loaded: true
+              }
+            }
+          });
+          console.log(`Got ${this.objects}.`);
         } else {
           // TODO: Error handling
-          console.error("Couldn't get object list.");
+          console.error(`Couldn't get object list for ${objType}.`);
+          this.$patch({ alertMessages: {
+              errors: [`Couldn't get object list for ${objType}.`]
+            }
+          });
         }
       },
-      async deleteObject(objId) {
-        console.log("objId", objId)
-        console.log("this.activeObj", this.activeObj(objId))
-        const gResponse = await fetch(`http://0.0.0.0:5000/api/v1/${this.objType}/delete`, {
+      async deleteObject(objId, objType) {
+        const gResponse = await fetch(`http://0.0.0.0:5000/api/v1/${objType}/delete`, {
           method: "DELETE",
           headers:{
             "Content-Type":"application/json"
@@ -54,7 +54,7 @@ export default defineStore('object', {
         });
         const response = await gResponse.json();
         if(gResponse.status == 200) {
-          this.getObjectList()
+          this.getObjectList(objType)
           this.$patch({ alertMessages: {
                 errors: response.errors,
                 warnings: response.warnings,

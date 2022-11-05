@@ -19,7 +19,8 @@
   // lifecycle hooks
   onMounted(() => {
     console.log(`Initial log message.`);
-    store.getObjectList()
+    store.getObjectList(route.params.objtype)
+    console.log(store.objects)
   })
 </script>
 
@@ -29,9 +30,9 @@
   <alertDisplay alert-type="warning" :obj-type=$route.params.objtype :alerts="store.alertMessages.warnings"></alertDisplay>
   <alertDisplay alert-type="success" :obj-type=$route.params.objtype :alerts="store.alertMessages.success"></alertDisplay>
   <alertDisplay alert-type="info" :obj-type=$route.params.objtype :alerts="store.alertMessages.infos"></alertDisplay>
-  <template v-if="!store.loadingObjects">
+  <template v-if="store.objects[$route.params.objtype]?.loaded">
     <div :class="`list-container ${route.params.objtype}`">
-      <div v-for="(obj, index) in store.objectList"  :key="index" class="row">
+      <div v-for="(obj, index) in store.objects[route.params.objtype]?.list" :key="index" class="row">
         <div class="col">
           {{ obj.meta.display_name }}
         </div>
@@ -44,7 +45,7 @@
           </router-link>
         </div>
         <div class="col">
-          <button @click="store.deleteObject(obj.data.id)" type="button" class="btn btn-outline-danger">
+          <button @click="store.deleteObject(obj.data.id, route.params.objtype)" type="button" class="btn btn-outline-danger">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-basket-fill" viewBox="0 0 16 16">
               <path d="M5.071 1.243a.5.5 0 0 1 .858.514L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15.5a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5H15v5a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9H.5a.5.5 0 0 1-.5-.5v-2A.5.5 0 0 1 .5 6h1.717L5.07 1.243zM3.5 10.5a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3z"/>
             </svg>
