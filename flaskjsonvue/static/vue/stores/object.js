@@ -20,7 +20,7 @@ export default defineStore('object', {
         this.count++
       },
       activeObj(objId, objType) {
-        return this.objects[objType].objectList.find(element => element.data.id == objId)
+        return this.objects[objType].list.find(element => element.data.id == objId)
       },
       async getObjectList(objType) {
         console.log(`Getting object list for: ${objType}.`)
@@ -50,7 +50,7 @@ export default defineStore('object', {
           headers:{
             "Content-Type":"application/json"
           },
-          body: JSON.stringify(this.activeObj(objId).data)
+          body: JSON.stringify(this.activeObj(objId, objType).data)
         });
         const response = await gResponse.json();
         if(gResponse.status == 200) {
