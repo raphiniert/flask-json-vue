@@ -29,7 +29,7 @@
     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" :aria-label="`${props.alertType}`"><use :xlink:href="`#alert-${props.alertType}-symbol`"/></svg>
     <ul class="mb-0 d-inline-block">
       <li v-for="alert in props.alerts">
-        <template v-if="props.alertType === 'danger'">
+        <template v-if="typeof alert === 'object'">
           <router-link :to="{ hash: `#${props.objType}-prop-${alert.field}`}" class="alert-link">{{ alert.field }}</router-link> {{ alert.message }}
         </template>
         <template v-else>
