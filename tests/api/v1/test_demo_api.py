@@ -39,7 +39,7 @@ def test_demo_api_add(client):
     assert b"Created new demo with id: 4" in response.data
 
 
-def test_weight_get(client):
+def test_demo_api_get(client):
     """
     TODO:
     :param client:

@@ -4,7 +4,7 @@ from flask import Blueprint, render_template
 
 logger = logging.getLogger("flaskjsonvue")
 
-bp = Blueprint("demo", __name__, url_prefix="/demo")
+bp = Blueprint("demo", __name__)
 
 
 @bp.route("/", methods=("GET",))
