@@ -8,16 +8,16 @@ import useObjectStore from './stores/object';
 // 1. Define route components.
 // These can be imported from other files
 const Home = { template: '<div>Home</div>' }
-const Demo = { template: '<div>About</div>' }
 
 // 2. Define some routes
 // Each route should map to a component.
 // We'll talk about nested routes later.
+// TODO: call endpoint with objtypes,
 const routes = [
-  { path: '/', component: Home },
-  { path: '/:objtype', component: ObjectList },
-  { path: '/:objtype/add', component: ObjectDetail },
-  { path: '/:objtype/update/:id', component: ObjectDetail },
+  { name: 'root', path: '/', component: Home },
+  { name: 'list', path: '/:objtype', component: ObjectList },
+  { name: 'add', path: '/:objtype/add', component: ObjectDetail },
+  { name: 'update', path: '/:objtype/update/:id', component: ObjectDetail },
 ]
 
 // 3. Create the router instance and pass the `routes` option
@@ -44,5 +44,3 @@ const app = createApp({})
 app.use(router)
 app.use(pinia)
 app.mount('#app')
-
-const objectStore = useObjectStore()
