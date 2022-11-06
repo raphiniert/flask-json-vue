@@ -39,3 +39,6 @@ venv/
 # npm
 node_modules/
 dist/
+
+# project specific
+flaskjsonvue/static/json/*.json
