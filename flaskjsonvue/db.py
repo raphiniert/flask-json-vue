@@ -1,4 +1,6 @@
 import click
+import inspect
+
 from flask import current_app
 from flask.cli import with_appcontext
 from flask_sqlalchemy import SQLAlchemy
@@ -15,6 +17,17 @@ def setup_engine():
         current_app.config.get("SQLALCHEMY_DATABASE_URI"),
     )
     Base.metadata.reflect(engine)
+
+
+def list_db_models():
+    from flaskjsonvue import models
+
+    #  return list of all member names that extend db.Model
+    return [
+        (name, obj)
+        for name, obj in inspect.getmembers(models)
+        if hasattr(obj, "__mro__") and db.Model in obj.__mro__
+    ]
 
 
 @click.command("init-db")
