@@ -51,11 +51,15 @@ def init_db(ctx: click.Context, auto_import: bool, import_dir: str):
     if auto_import:
         for name, cls in list_db_models():
             import_file = f"{import_dir}/{name.lower()}.json"
-            click.echo(f"Importing {name} objects from {import_file}")
-            with open(import_file) as f:
-                data = json.load(f)
-                for item in data:
-                    new_obj = cls(**item)
-                    db.session.add(new_obj)
-                    db.session.commit()
-                    click.echo(f"Imported {new_obj}.")
+            # check if file exists
+            try:
+                with open(import_file) as f:
+                    click.echo(f"Importing {name} objects from {import_file}")
+                    data = json.load(f)
+                    for item in data:
+                        new_obj = cls(**item)
+                        db.session.add(new_obj)
+                        db.session.commit()
+                        click.echo(f"Imported {new_obj}.")
+            except FileNotFoundError:
+                click.echo(f"File {import_file} not found.")
