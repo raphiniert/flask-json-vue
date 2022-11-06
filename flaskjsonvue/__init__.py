@@ -60,7 +60,10 @@ def create_app(test_config=None):
     app.register_blueprint(api_v1_demo.bp)
     logger.debug(f"Registered api_v1_demo blueprint")
 
-    # add rule to make demo index view func
+    from flaskjsonvue.api.v1 import address as api_v1_address
+
+    app.register_blueprint(api_v1_address.bp)
+    logger.debug(f"Registered api_v1_address blueprint")
 
     # client
     from flaskjsonvue.client import demo as client_demo

@@ -80,3 +80,19 @@ class Demo(db.Model, JsonModel):
 
     def __repr__(self) -> str:
         return f"<Demo {self.name} ({self.id})>"
+
+
+# create address model
+class Address(db.Model, JsonModel):
+    # Table settings
+    __tablename__ = "address"
+
+    # Columns
+    id = db.Column(db.Integer, primary_key=True)
+    street = db.Column(db.String, nullable=False)
+
+    def __init__(self, **kwargs):
+        self.init(**kwargs)
+
+    def __repr__(self) -> str:
+        return f"<Address {self.street} ({self.id})>"

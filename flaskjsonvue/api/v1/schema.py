@@ -4,6 +4,7 @@ from flask import Blueprint, jsonify, request
 from jsonschema import FormatChecker, ValidationError, Draft202012Validator, validate
 
 from flaskjsonvue.api.v1.schemes.demo import DemoJsonSchema
+from flaskjsonvue.api.v1.schemes.address import AddressJsonSchema
 
 logger = logging.getLogger("flaskjsonvue")
 
@@ -11,6 +12,7 @@ bp = Blueprint("api_schema", __name__, url_prefix="/schema")
 
 ENDPOINT_SCHEMA_MAPPING = {
     "demo": DemoJsonSchema,
+    "address": AddressJsonSchema,
 }
 
 
