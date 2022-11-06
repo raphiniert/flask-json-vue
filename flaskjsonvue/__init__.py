@@ -76,4 +76,9 @@ def create_app(test_config=None):
 
     app.cli.add_command(init_db)
 
+    # json export related
+    from flaskjsonvue.export import export_json
+
+    app.cli.add_command(export_json)
+
     return app
