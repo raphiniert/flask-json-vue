@@ -2,7 +2,7 @@ from flaskjsonvue.api.v1.schemes.base import BaseJsonSchema
 
 
 class AddressJsonSchema(BaseJsonSchema):
-    name = "Addres"
+    name = "Address"
     description = "Address JSON object"
     relations = {}
 

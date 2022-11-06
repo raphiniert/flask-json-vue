@@ -3,7 +3,7 @@ import pytest
 
 from flask.config import Config
 from flaskjsonvue import create_app
-from flaskjsonvue.db import db, setup_engine
+from flaskjsonvue.db import db, setup_engine, list_db_models
 from flaskjsonvue.models import Demo
 
 
@@ -26,13 +26,14 @@ def app():
         db.init_app(app)
         db.create_all()
 
-        # load demo data from json file
-        with open("tests/data/demo.json") as f:
-            # create demo objects
-            demos = [Demo(**d) for d in json.load(f)]
-            # save demo objects to database
-            db.session.add_all(demos)
-            db.session.commit()
+        # load test data from json files
+        for name, cls in list_db_models():
+            import_dir = "tests/data"
+            import_file = f"{import_dir}/{name.lower()}.json"
+            with open(import_file) as f:
+                new_objects = [cls(**o) for o in json.load(f)]
+                db.session.add_all(new_objects)
+                db.session.commit()
 
     yield app
 

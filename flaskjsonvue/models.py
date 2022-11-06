@@ -91,6 +91,10 @@ class Address(db.Model, JsonModel):
     id = db.Column(db.Integer, primary_key=True)
     street = db.Column(db.String, nullable=False)
 
+    @property
+    def display_name(self):
+        return self.street
+
     def __init__(self, **kwargs):
         self.init(**kwargs)
 
