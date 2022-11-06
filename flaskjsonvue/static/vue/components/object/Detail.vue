@@ -71,7 +71,7 @@
       success.value = response.success
       loadedObject.value = true;
       store.getObjectList(route.params.objtype)
-      router.push({name: 'update', params: {objtype: route.params.objtype, objid: obj.value.id}})
+      router.push({name: 'update', params: {objtype: route.params.objtype, id: obj.value.id}})
     } else {
       errors.value = response.errors
       console.error(`Couldn't add ${route.params.objtype}!`)
