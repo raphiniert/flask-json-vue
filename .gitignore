@@ -42,3 +42,4 @@ dist/
 
 # project specific
 flaskjsonvue/static/json/*.json
+tests/json/*.json
