@@ -23,4 +23,3 @@ def test_export_json(runner):
     )
     assert result.exit_code == 0
     assert "Filtering by model: demon" in result.output
-    assert "No models found." in result.output

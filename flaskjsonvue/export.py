@@ -54,5 +54,3 @@ def export_json(export_dir: str, model: str):
         else:
             click.echo(f"Could not find any {model_name} objects to export.")
             # logging.info(f"Could not find any {model_name} objects to export.")
-    else:
-        click.echo(f"No models found.")
