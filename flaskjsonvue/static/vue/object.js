@@ -3,7 +3,6 @@ import {createPinia} from 'pinia';
 import {createRouter, createWebHashHistory} from 'vue-router';
 import ObjectList from './components/object/List.vue';
 import ObjectDetail from './components/object/Detail.vue';
-import useObjectStore from './stores/object';
 
 // 1. Define route components.
 // These can be imported from other files
