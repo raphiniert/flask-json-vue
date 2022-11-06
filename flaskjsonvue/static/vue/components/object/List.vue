@@ -1,6 +1,6 @@
 <script setup>
-  import { useRouter, useRoute } from 'vue-router'
-  import { computed, onMounted, ref } from 'vue'
+  import { onBeforeRouteUpdate, useRouter, useRoute } from 'vue-router'
+  import { onMounted } from 'vue'
   // import object store
   import useObjectStore from '../../stores/object'
 
@@ -13,15 +13,18 @@
   const router = useRouter()
   const route = useRoute()
 
-  // reactive state
-  // tbd.
 
   // lifecycle hooks
   onMounted(() => {
     console.log(`Initial log message.`);
     store.getObjectList(route.params.objtype)
-    console.log(store.objects)
   })
+
+  onBeforeRouteUpdate((to, from, next) => {
+    store.getObjectList(to.params.objtype)
+    next()
+  })
+
 </script>
 
 <template>
