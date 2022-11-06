@@ -31,7 +31,14 @@ export default defineStore('object', {
               }
             }
           });
-          console.log(`Got ${this.objects}.`);
+          // show info mmessage if list is empty
+          if (this.objects[objType].list.length == 0) {
+            this.$patch({
+              alertMessages: {
+                infos: [`There are 0 ${objType} objects.`]
+              }
+            });
+          }
         } else {
           // TODO: Error handling
           console.error(`Couldn't get object list for ${objType}.`);
