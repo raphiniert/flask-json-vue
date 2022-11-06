@@ -71,7 +71,7 @@
       success.value = response.success
       loadedObject.value = true;
       store.getObjectList(route.params.objtype)
-      window.location = `http://0.0.0.0:5000/#/${route.params.objtype}/update/${obj.value.id}`
+      router.push({name: 'update', params: {objtype: route.params.objtype, objid: obj.value.id}})
     } else {
       errors.value = response.errors
       console.error(`Couldn't add ${route.params.objtype}!`)
@@ -126,7 +126,7 @@
   async function deleteObject(objId) {
     store.deleteObject(objId, route.params.objtype)
     store.getObjectList(route.params.objtype)
-    window.location = `http://0.0.0.0:5000/#/${route.params.objtype}`
+    router.push({name: 'list', params: {objtype: route.params.objtype}})
   }
 
   /**
