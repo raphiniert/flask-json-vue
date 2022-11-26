@@ -16,8 +16,14 @@ flask json api and vue
     │   ├── static              # static files
     │   │   ├── dist            # webpack output files
     │   │   ├── js              # custom js files
+    │   │   ├── json            # exported json files
     │   │   ├── scss            # custom scss files
     │   │   └── vue             # vue files and components
+    │   │       ├── components  # vue list and detail components
+    │   │       ├── router      # vue router files
+    │   │       ├── stores      # vue store files
+    │   │       ├── views       # static views
+    │   │       └── object.js   # main vue js file
     │   ├── __init__.py         # create app
     │   ├── db.py               # db setup
     │   └── models.py           # database models
@@ -97,11 +103,20 @@ flask run
 
 #### Initialize database
 
-Drops all tables and recreates them.
+Drops all tables and recreates them. If the auto-import option is set, the command tries to load data from `flaskjsonvue/static/json` files. Use import-dir to specify the directory containing json data.
 
 ```shell script
-flask init-db [--auto-import]
+flask init-db [--auto-import] [--import-dir]
 ```
+
+#### Export data
+
+Exports all `flaskjson.models` extending `db.Model` to json files to `flaskjsonvue/static/json/[model].json`. By default all models are exported. To only export one single models specify it via the model option. A different export directory can also be set.
+
+```shell script
+flask export-json [--export-dir] [--model]
+```
+
 
 ## Test
 
