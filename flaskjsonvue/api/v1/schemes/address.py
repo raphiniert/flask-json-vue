@@ -22,8 +22,8 @@ class AddressJsonSchema(BaseJsonSchema):
                     "min": 1,
                 },
                 "street": {
+                    "description": f"The {cls.name.lower()}'s street name.",
                     "type": "string",
-                    "description": f"The {cls.name.lower()}'s name.",
                     "minLength": 1,
                 },
             },

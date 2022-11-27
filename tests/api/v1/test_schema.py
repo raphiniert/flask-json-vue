@@ -3,6 +3,7 @@ import unittest
 
 from flaskjsonvue.api.v1.schemes.base import BaseJsonSchema
 from flaskjsonvue.api.v1.schemes.demo import DemoJsonSchema
+from flaskjsonvue.api.v1.schemes.address import AddressJsonSchema
 
 #
 # BaseJsonSchema
@@ -356,6 +357,147 @@ class TestDemoJsonSchema(unittest.TestCase):
                     },
                 },
                 "required": ["id", "name", "entry_date", "decimal_value", "address_id"],
+            },
+        }
+
+    @classmethod
+    def tearDownClass(cls):
+        """Method called after tests in an individual class have run"""
+        pass
+
+
+class TestAddressJsonSchema(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        """Setup test data once for all class methods"""
+        cls.schema = AddressJsonSchema()
+
+    def setUp(self) -> None:
+        """Set up run once for every test method"""
+        pass
+
+    def test_schema_base_url(self):
+        assert self.schema.schema_base_url() == "/api/v1/schema/address"
+
+    def tearDown(self) -> None:
+        """Clean up run after every test method"""
+        pass
+
+    def test_schema_detail(self):
+        assert self.schema.detail() == {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "/api/v1/schema/address/detail.schema.json",
+            "title": "Address",
+            "description": "Address JSON object",
+            "type": "object",
+            "relations": {},
+            "properties": {
+                "id": {
+                    "description": "The address's unique identifier",
+                    "type": "integer",
+                    "min": 1,
+                },
+                "street": {
+                    "description": "The address's street name.",
+                    "type": "string",
+                    "minLength": 1,
+                },
+            },
+            "required": [
+                "id",
+                "street",
+            ],
+        }
+
+    def test_schema_create(self):
+        assert self.schema.create() == {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "/api/v1/schema/address/create.schema.json",
+            "title": "Address",
+            "description": "Address JSON object",
+            "type": "object",
+            "relations": {},
+            "properties": {
+                "street": {
+                    "description": "The address's street name.",
+                    "type": "string",
+                    "minLength": 1,
+                },
+            },
+            "required": [
+                "street",
+            ],
+        }
+
+    def test_schema_update(self):
+        assert self.schema.update() == {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "/api/v1/schema/address/update.schema.json",
+            "title": "Address",
+            "description": "Address JSON object",
+            "type": "object",
+            "relations": {},
+            "properties": {
+                "id": {
+                    "description": "The address's unique identifier",
+                    "type": "integer",
+                    "min": 1,
+                },
+                "street": {
+                    "description": "The address's street name.",
+                    "type": "string",
+                    "minLength": 1,
+                },
+            },
+            "required": [
+                "id",
+                "street",
+            ],
+        }
+
+    def test_schema_delete(self):
+        assert self.schema.delete() == {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "/api/v1/schema/address/delete.schema.json",
+            "title": "Address",
+            "description": "Address JSON object",
+            "type": "object",
+            "relations": {},
+            "properties": {
+                "id": {
+                    "description": "The address's unique identifier",
+                    "type": "integer",
+                    "min": 1,
+                },
+            },
+            "required": ["id"],
+        }
+
+    def test_schema_array(self):
+        assert self.schema.array() == {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "/api/v1/schema/address/array.schema.json",
+            "title": "Address",
+            "description": "Array of Address objects",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "description": "The address's unique identifier",
+                        "type": "integer",
+                        "min": 1,
+                    },
+                    "street": {
+                        "description": "The address's street name.",
+                        "type": "string",
+                        "minLength": 1,
+                    },
+                },
+                "required": [
+                    "id",
+                    "street",
+                ],
             },
         }
 
