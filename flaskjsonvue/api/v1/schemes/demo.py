@@ -4,7 +4,7 @@ from flaskjsonvue.api.v1.schemes.base import BaseJsonSchema
 class DemoJsonSchema(BaseJsonSchema):
     name = "Demo"
     description = "Demo JSON object"
-    relations = {}
+    relations = {"address_id": "address"}
 
     @classmethod
     def detail(cls):
@@ -35,11 +35,16 @@ class DemoJsonSchema(BaseJsonSchema):
                     "description": f"The {cls.name.lower()}'s decimal number.",
                     "type": "number",
                 },
+                "address_id": {
+                    "type": ["integer", "null"],
+                    "description": f"The {cls.name.lower()}'s address id.",
+                },
             },
             "required": [
                 "id",
                 "name",
                 "entry_date",
                 "decimal_value",
+                "address_id",
             ],
         }

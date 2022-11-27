@@ -63,6 +63,7 @@ class JsonModelTest(unittest.TestCase):
         cls.nameless_object = NamelessObject()
         cls.demo_object = Demo(
             id=1,
+            address_id=None,
             name="demo",
             decimal_value=1.0,
             entry_date="2022-01-01T01:23:45+01:00",
@@ -91,6 +92,7 @@ class JsonModelTest(unittest.TestCase):
         assert self.demo_object.json == {
             "meta": {"display_name": "demo"},
             "data": {
+                "address_id": None,
                 "decimal_value": 1.0,
                 "entry_date": "2022-01-01T01:23:45+01:00",
                 "id": 1,
@@ -125,6 +127,7 @@ class DemoTest(unittest.TestCase):
 
         cls.demo_object = Demo(
             id=1,
+            address_id=None,
             name="demo",
             decimal_value=1.0,
             entry_date="2022-01-01T00:00:00+01:00",

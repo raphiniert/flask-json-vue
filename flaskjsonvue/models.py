@@ -3,6 +3,7 @@ import logging
 from datetime import datetime
 from decimal import Decimal
 from sqlalchemy import func, DateTime
+from sqlalchemy.orm import relationship
 
 from flaskjsonvue.db import db
 
@@ -63,25 +64,6 @@ class JsonModel(DisplayName):
         return value
 
 
-class Demo(db.Model, JsonModel):
-    # Table settings
-    __tablename__ = "demo"
-
-    # Columns
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, nullable=False)
-    decimal_value = db.Column(db.DECIMAL, nullable=False)
-    entry_date = db.Column(
-        db.DateTime(timezone=True), nullable=False, default=func.now()
-    )
-
-    def __init__(self, **kwargs):
-        self.init(**kwargs)
-
-    def __repr__(self) -> str:
-        return f"<Demo {self.name} ({self.id})>"
-
-
 # create address model
 class Address(db.Model, JsonModel):
     # Table settings
@@ -90,6 +72,9 @@ class Address(db.Model, JsonModel):
     # Columns
     id = db.Column(db.Integer, primary_key=True)
     street = db.Column(db.String, nullable=False)
+
+    # relationships
+    demos = relationship("Demo")
 
     @property
     def display_name(self):
@@ -100,3 +85,26 @@ class Address(db.Model, JsonModel):
 
     def __repr__(self) -> str:
         return f"<Address {self.street} ({self.id})>"
+
+
+class Demo(db.Model, JsonModel):
+    # Table settings
+    __tablename__ = "demo"
+
+    # Columns
+    id = db.Column(db.Integer, primary_key=True)
+    address_id = db.Column(db.Integer, db.ForeignKey(Address.id), nullable=True)
+    name = db.Column(db.String, nullable=False)
+    decimal_value = db.Column(db.DECIMAL, nullable=False)
+    entry_date = db.Column(
+        db.DateTime(timezone=True), nullable=False, default=func.now()
+    )
+
+    # relationships
+    address = relationship("Address", back_populates="demos")
+
+    def __init__(self, **kwargs):
+        self.init(**kwargs)
+
+    def __repr__(self) -> str:
+        return f"<Demo {self.name} ({self.id})>"

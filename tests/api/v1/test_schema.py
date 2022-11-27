@@ -207,8 +207,12 @@ class TestDemoJsonSchema(unittest.TestCase):
             "title": "Demo",
             "description": "Demo JSON object",
             "type": "object",
-            "relations": {},
+            "relations": {"address_id": "address"},
             "properties": {
+                "address_id": {
+                    "type": ["integer", "null"],
+                    "description": f"The demo's address id.",
+                },
                 "entry_date": {
                     "description": f"The demo's entry date.",
                     "type": "string",
@@ -229,7 +233,7 @@ class TestDemoJsonSchema(unittest.TestCase):
                     "minLength": 1,
                 },
             },
-            "required": ["id", "name", "entry_date", "decimal_value"],
+            "required": ["id", "name", "entry_date", "decimal_value", "address_id"],
         }
 
     def test_schema_create(self):
@@ -239,8 +243,12 @@ class TestDemoJsonSchema(unittest.TestCase):
             "title": "Demo",
             "description": "Demo JSON object",
             "type": "object",
-            "relations": {},
+            "relations": {"address_id": "address"},
             "properties": {
+                "address_id": {
+                    "type": ["integer", "null"],
+                    "description": f"The demo's address id.",
+                },
                 "entry_date": {
                     "description": f"The demo's entry date.",
                     "type": "string",
@@ -256,7 +264,7 @@ class TestDemoJsonSchema(unittest.TestCase):
                     "minLength": 1,
                 },
             },
-            "required": ["name", "entry_date", "decimal_value"],
+            "required": ["name", "entry_date", "decimal_value", "address_id"],
         }
 
     def test_schema_update(self):
@@ -266,8 +274,12 @@ class TestDemoJsonSchema(unittest.TestCase):
             "title": "Demo",
             "description": "Demo JSON object",
             "type": "object",
-            "relations": {},
+            "relations": {"address_id": "address"},
             "properties": {
+                "address_id": {
+                    "type": ["integer", "null"],
+                    "description": f"The demo's address id.",
+                },
                 "entry_date": {
                     "description": f"The demo's entry date.",
                     "type": "string",
@@ -288,7 +300,7 @@ class TestDemoJsonSchema(unittest.TestCase):
                     "minLength": 1,
                 },
             },
-            "required": ["id", "name", "entry_date", "decimal_value"],
+            "required": ["id", "name", "entry_date", "decimal_value", "address_id"],
         }
 
     def test_schema_delete(self):
@@ -298,7 +310,7 @@ class TestDemoJsonSchema(unittest.TestCase):
             "title": "Demo",
             "description": "Demo JSON object",
             "type": "object",
-            "relations": {},
+            "relations": {"address_id": "address"},
             "properties": {
                 "id": {
                     "description": "The demo's unique identifier",
@@ -319,6 +331,10 @@ class TestDemoJsonSchema(unittest.TestCase):
             "items": {
                 "type": "object",
                 "properties": {
+                    "address_id": {
+                        "type": ["integer", "null"],
+                        "description": f"The demo's address id.",
+                    },
                     "entry_date": {
                         "description": f"The demo's entry date.",
                         "type": "string",
@@ -339,7 +355,7 @@ class TestDemoJsonSchema(unittest.TestCase):
                         "minLength": 1,
                     },
                 },
-                "required": ["id", "name", "entry_date", "decimal_value"],
+                "required": ["id", "name", "entry_date", "decimal_value", "address_id"],
             },
         }
 

@@ -9,6 +9,7 @@
   // import custom date-time input component
   import DateTimeInput from '../input/datetime.vue'
   import alertDisplay from '../alert/display.vue'
+  import SelectRelation from '../input/selectRelation.vue'
 
   const store = useObjectStore()
 
@@ -220,6 +221,9 @@
         <div v-if="name != 'id'" class="row">
           <div v-if="getInputType(prop) == 'datetime'" class="col">
             <DateTimeInput v-model="obj[name]" :propertyName="name" :objType="route.params.objtype" :hasError="hasError(name)" :validated="validated"/>
+          </div>
+          <div v-else-if="Object.keys(schema.relations).includes(name)">
+            <SelectRelation v-model="obj[name]" :propertyName="name" :objType="`${schema.relations[name]}`" :hasError="hasError(name)" :validated="validated"></selectRelation>
           </div>
           <div v-else-if="getInputType(prop) == 'number'" class="col form-group has-validation">
             <label :for="`${route.params.objtype}-prop-${name}`">{{ name }}</label>

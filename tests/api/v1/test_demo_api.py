@@ -28,6 +28,7 @@ def test_demo_api_add(client):
     response = client.post(
         f"{URL_PREFIX}/add",
         json={
+            "address_id": None,
             "name": "Test Name",
             "entry_date": "2022-01-01T00:00:00+01:00",
             "decimal_value": 1.0,
@@ -59,6 +60,7 @@ def test_demo_update(client):
         f"{URL_PREFIX}/update",
         json={
             "id": 1,
+            "address_id": None,
             "name": "Demo",
             "entry_date": "2022-01-01T00:00:01+01:00",
             "decimal_value": 100.0,
